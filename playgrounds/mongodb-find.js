@@ -9,8 +9,8 @@ MongoClient.connect("mongodb://localhost:27017/TodosApp", {useNewUrlParser: true
     // }, (erro)=>{
     //     console.log("un able to fetch the document ", erro)
     // });
-    db.db("TodosApp").collection("Users").find({name: "Suheyb Abdulwahid Abdullahi"}).toArray().then((docs) => {
-        console.log(`There is ${JSON.stringify(docs, undefined, 2)} documents`)
+    db.db("TodosApp").collection("Users").find({name: "Suheyb Abdulwahid Abdullahi"}).count().then((count) => {
+        console.log(`There is ${count} documents`)
     }, (err) => {
         console.log(`Un able to fetch the document ${err}`)
     })
