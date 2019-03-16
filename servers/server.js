@@ -11,7 +11,7 @@ var app = express();
 
 app.use(bodyParser.json());
 
-
+const port = process.env.PORT || 3000
 app.post('/todos', (req, res) => {
     var todo = new Todo({
         text: req.body.text
@@ -45,45 +45,8 @@ app.get('/todos/:id', (req, res) => {
   }).catch(e => res.status(400).send())
 })
 
-app.listen(3000, () => {
-    console.log('Server running at port 3000')
+app.listen(port, () => {
+    console.log(`Server running at port ${port}`)
 })
 
 module.exports = {app}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// var newTodo = new Todo({
-//     text: 'Something To do'
-// })
-
-// newTodo.save().then((doc) => {
-//     console.log(doc)
-// }, (err) => {
-//     console.log("Un Able to save the document")
-// })
-
-// var otherTodo = new Todo({
-//     text: '     suhayb        '
-// })
-
-// otherTodo.save().then((doc) => {
-//     console.log('saved doc ', JSON.stringify(doc, undefined, 2))
-// }, (err) => {
-//     console.log('Unable to save the document', err)
-// })
