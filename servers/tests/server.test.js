@@ -10,7 +10,7 @@ const todos = [{
   text: "First todo to test"
 }, {
   _id: new ObjectID(),
-  text: "Second todo to test",
+  text: "Second todo to test yyyyeeees",
   completed: false,
   completedAt: null
 }]
