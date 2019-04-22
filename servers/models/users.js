@@ -1,12 +1,59 @@
-var mongoose = require('mongoose')
-var Users = mongoose.model('Users', {
+const mongoose = require('mongoose')
+const validator = require('validator')
+const jwt = require('jsonwebtoken')
+var _ = require('lodash')
+
+//use this functionality to make your own methods
+const UserSchema = new mongoose.Schema({
     email: {
         type: String,
         minlength: 1,
         required: true,
         trim: true,
-        unique: true
-    }
-})
+        unique: true,
+        validate: {
+          validator: validator.isEmail,
+          message: `{value} is not a valid email`
+        }
 
-module.exports = { Users }
+    },
+    password: {
+      type: String,
+      minlength: 6,
+      required: true
+    },
+    tokens: [{
+      access: {
+        type: String,
+        required: true
+      },
+      token: {
+        type: String,
+        required: true
+      }
+    }]
+})
+//this code helps you to create your own method
+//and this helps me to create a long un understandable worde to be token
+//use function instead arrow function because of '''this'''
+UserSchema.methods.generateAuthToken = function() {
+  var user = this;
+  var access = 'auth';
+  var token = jwt.sign({_id: user._id.toHexString(), access}, 'Hmmm12@').toString();
+  user.tokens.push({access, token})
+
+  return user.save().then(() => {
+    return token
+  })
+
+}
+UserSchema.methods.toJSON = function () {
+  var user = this;
+  var userObject = user.toObject();
+
+  return _.pick(userObject, ['_id', 'email']);
+};
+
+var User = mongoose.model('Users', UserSchema)
+
+module.exports = { User }

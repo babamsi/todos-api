@@ -6,7 +6,7 @@ const express = require('express');
 
 const { mongoose } = require('./db/mongoose');
 const { Todo } = require('./models/todos');
-const { Users } = require('./models/users');
+const { User } = require('./models/users');
 
 const app = express();
 
@@ -17,9 +17,9 @@ app.post('/todos', (req, res) => {
     var todo = new Todo({
         text: req.body.text
     })
-    todo.save().then((doc)=>{
+    todo.save().then(doc=>{
         res.send(doc)
-    }, (e)=>{
+    }).catch(e=>{
         res.status(400).send(e)
     })
 })
@@ -83,6 +83,21 @@ app.patch('/todos/:id', (req, res) => {
     res.send(todo)
   }).catch(e => {
     res.status(400).send()
+  })
+})
+
+
+app.post('/users', (req, res) => {
+
+
+  var body = _.pick(req.body, ['email', 'password'])
+  var users = new User(body)
+  users.save().then(() => {
+    return users.generateAuthToken()
+  }).then(token => {
+    res.header('x-auth', token).send(users)
+  }).catch(e => {
+    res.status(400).send(e)
   })
 })
 
