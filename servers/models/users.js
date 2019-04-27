@@ -71,6 +71,26 @@ UserSchema.statics.findByToken = function(token) {
     'tokens.access': 'auth'
   })
 }
+UserSchema.statics.findByCrendentials = function(email, password) {
+  var User = this;
+  return User.findOne({email: email}).then(user => {
+    if(!user) {
+      return Promise.reject()
+    }
+    //bcrypt only supports callback not supports Promise
+    //thats why here we create its promise
+    return new Promise((resolve, reject) => {
+      bcrypt.compare(password, user.password, (error, res) => {
+       if(res) {
+         resolve(user)
+       } else {
+         reject()
+       }
+     })
+    })
+
+  })
+}
 UserSchema.pre('save', function(next) {
   var user = this;
   if (user.isModified('password')) {
