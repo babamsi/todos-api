@@ -108,7 +108,7 @@ app.get('/users/me', authenticate, (req, res) => {
   res.send(req.user)
 })
 
-app.post('/users/loggin', (req, res) => {
+app.post('/users/login', (req, res) => {
   var body = _.pick(req.body, ['email', 'password']);
   User.findByCrendentials(body.email, body.password).then(user => {
     //when user logged in generate new authenticate tokne
