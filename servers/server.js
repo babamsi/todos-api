@@ -121,6 +121,14 @@ app.post('/users/login', (req, res) => {
   })
 })
 
+app.delete('/users/me/token', authenticate, (req, res) => {
+  req.user.removeToken().then(() => {
+    res.status(200).send()
+  }, () => {
+    res.status(401).send()
+  })
+})
+
 app.listen(port, () => {
     console.log(`Server running at port ${port}`)
 })
