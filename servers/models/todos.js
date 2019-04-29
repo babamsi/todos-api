@@ -6,7 +6,6 @@ var Todo = mongoose.model('Todo', {
         required: true,
         minlength: 1,
         trim: true   //adding validation
-
     },
     completed: {
         type: Boolean,
@@ -15,6 +14,10 @@ var Todo = mongoose.model('Todo', {
     completedAt: {
         type: Number,
         default: null, // adding validation
+    },
+    _creator: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true
     }
 })
 module.exports = { Todo }
