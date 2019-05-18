@@ -123,7 +123,7 @@ app.get('/users/me', authenticate, (req, res) => {
 app.post('/users/login', (req, res) => {
   var body = _.pick(req.body, ['email', 'password']);
   User.findByCrendentials(body.email, body.password).then(user => {
-    //when user logged in generate new authenticate tokne
+    //when user logged in generate new authenticate token
     return user.generateAuthToken().then(token => {
       res.header('x-auth', token).send(user)
     })
